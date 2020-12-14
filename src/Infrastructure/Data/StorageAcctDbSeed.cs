@@ -45,7 +45,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
 
         string LoadAzureStorageFileContents(string fileName)
         {
-            var storageAccountCS = "REPLACEWITHCS";
+            var storageAccountCS = "DefaultEndpointsProtocol=https;EndpointSuffix=core.windows.net;AccountName=dsoohlite3sa;AccountKey=XYHz0ZOv+Fjq8UMTmd9LNUbPbrEw8yURIwcy+0n2CSLu7AcYZi/LBuTAcsEQN0Gm29QgbpC3YphDnCZvXe2LkA==";
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(storageAccountCS);
 
             // Create a CloudFileClient object for credentialed access to Azure Files.
