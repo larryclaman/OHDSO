@@ -17,7 +17,7 @@ steps:
     architecture: 'x64'
 - script: |
     #pip install wheel
-    pip install detect-secrets
+    pip install detect-secrets -v
   displayName: Install detect-secrets
 
 
