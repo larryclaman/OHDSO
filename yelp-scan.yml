@@ -22,8 +22,8 @@ steps:
 
 
 - script: |
-    detect-secrets scan --custom-plugins yelp-plugins/azure_storage_key.py
-    #detect-secrets --custom-plugins yelp-plugins/ audit .secrets-baseline 
-    #$(pythonappdir)/detect-secrets scan --custom-plugins https://raw.githubusercontent.com/Yelp/detect-secrets/pre-v1-launch/detect_secrets/plugins/azure_storage_key.py > .secrets.baseline
-    #$(pythonappdir)/detect-secrets audit .secrets.baseline
+    # pipeline doesn't detect output, so have tool save output to file & cat it.
+    touch $(Build.StagingDirectory)/creds.json
+    detect-secrets scan --custom-plugins yelp-plugins/azure_storage_key.py > $(Build.StagingDirectory)/creds.json # pipeline doesn't 
+    cat $(Build.StagingDirectory)/creds.json
   displayName: 'detect-secrets credentials scan'
