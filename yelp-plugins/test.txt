@@ -1,0 +1,1 @@
+DefaultEndpointsProtocol=https;AccountName=lncblockblob02premium;AccountKey=xxiWd/6Ck/e+GL2/DmteaoWLyogANtYvmo8i/twwdrfC6bze0xk+Kv33llLj9ra3Kj+wbF0J9+E8kj8fecOUTg==;EndpointSuffix=core.windows.net
