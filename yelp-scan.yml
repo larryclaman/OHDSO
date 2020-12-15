@@ -1,16 +1,28 @@
 trigger: none
 
 pool:
-  name: 'ubuntu-latest'
+  vmImage: 'ubuntu-latest'
 
 variables:
   yelpimage: 'ghcr.io/larryclaman/dockerdetectsecrets:latest'
   pluginsdir: yelp-plugins
+  pythonappdir: /home/vsts/.local/bin
 
 
 steps:
-- task: CmdLine@2
+- task: UsePythonVersion@0
   inputs:
-    script: |
-      pip install detect-secrets
-      detect-secrets scan --custom-plugins $(pluginsdir)
+    versionSpec: '3.x'
+    addToPath: true
+    architecture: 'x64'
+- script: |
+    #pip install wheel
+    pip install detect-secrets -v
+  displayName: Install detect-secrets
+
+
+- script: |
+    detect-secrets scan --custom-plugins yelp-plugins/
+    #$(pythonappdir)/detect-secrets scan --custom-plugins https://raw.githubusercontent.com/Yelp/detect-secrets/pre-v1-launch/detect_secrets/plugins/azure_storage_key.py > .secrets.baseline
+    #$(pythonappdir)/detect-secrets audit .secrets.baseline
+  displayName: 'detect-secrets credentials scan'
