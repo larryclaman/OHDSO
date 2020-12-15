@@ -1,29 +1,35 @@
 trigger: none
 
-pool:
-  vmImage: 'ubuntu-latest'
+jobs:
+  - job: detectionscan
+    timeoutInMinutes: 5
+    pool:
+      vmImage: 'ubuntu-latest'
 
-variables:
-  yelpimage: 'ghcr.io/larryclaman/dockerdetectsecrets:latest'
-  pluginsdir: yelp-plugins
+    variables:
+      yelpimage: 'ghcr.io/larryclaman/dockerdetectsecrets:latest'
+      pluginsdir: yelp-plugins
 
+    steps:
+      - bash: |
+          docker pull $(yelpimage)
+          docker run -it --rm --name detect-secrets --volume $(Build.Repository.LocalPath):/usr/src/app $(yelpimage) > $(Build.StagingDirectory)/creds.json
+          cat  $(Build.StagingDirectory)/creds.json
 
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '3.x'
+          addToPath: true
+          architecture: 'x64'
 
-steps:
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.x'
-    addToPath: true
-    architecture: 'x64'
-- script: |
-    #pip install wheel
-    pip install detect-secrets
-  displayName: Install detect-secrets
+      - bash: |
+          #pip install wheel
+          pip install detect-secrets
+        displayName: Install detect-secrets
 
-
-- bash: |
-    # pipeline doesn't detect output, so have tool save output to file & cat it.
-    touch $(Build.StagingDirectory)/creds.json
-    detect-secrets scan --custom-plugins yelp-plugins/azure_storage_key.py $(Build.Repository.LocalPath) > $(Build.StagingDirectory)/creds.json
-    cat $(Build.StagingDirectory)/creds.json
-  displayName: 'detect-secrets credentials scan'
+      - bash: |
+          # pipeline doesn't detect output, so have tool save output to file & cat it.
+          touch $(Build.StagingDirectory)/creds.json
+          detect-secrets scan --custom-plugins yelp-plugins/azure_storage_key.py $(Build.Repository.LocalPath) > $(Build.StagingDirectory)/creds.json
+          cat $(Build.StagingDirectory)/creds.json
+        displayName: 'detect-secrets credentials scan'
