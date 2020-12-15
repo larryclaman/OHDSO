@@ -10,9 +10,18 @@ variables:
 
 
 steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
+    addToPath: true
+    architecture: 'x64'
 - script: |
-    pip install wheel
+    #pip install wheel
     pip install detect-secrets
+  displayName: Install detect-secrets
+
+
+- script: |
     $(pythonappdir)/detect-secrets scan --custom-plugins yelp-plugins/
     #$(pythonappdir)/detect-secrets scan --custom-plugins https://raw.githubusercontent.com/Yelp/detect-secrets/pre-v1-launch/detect_secrets/plugins/azure_storage_key.py > .secrets.baseline
     #$(pythonappdir)/detect-secrets audit .secrets.baseline
