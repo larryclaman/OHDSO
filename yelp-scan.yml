@@ -34,7 +34,7 @@ jobs:
           touch $(Build.StagingDirectory)/creds.json
           echo "running scan"
           which detect-secrets
-          python3 detect-secrets scan --custom-plugins $(Build.Repository.LocalPath)/$(pluginsdir)/azure_storage_key.py $(Build.Repository.LocalPath) > $(Build.StagingDirectory)/creds.json
+          python3 /opt/hostedtoolcache/Python/3.9.0/x64/bin/detect-secrets scan --custom-plugins $(Build.Repository.LocalPath)/$(pluginsdir)/azure_storage_key.py $(Build.Repository.LocalPath) > $(Build.StagingDirectory)/creds.json
           echo "ran scan"
           cat $(Build.StagingDirectory)/creds.json
         displayName: 'detect-secrets credentials scan'
