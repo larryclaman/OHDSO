@@ -1,17 +1,47 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
-trigger:
-- main
+trigger: none
+pr: master
 
 pool:
-  vmImage: 'windows-latest'
-
+  name: Hosted VS2017
 steps:
 - task: CredScan@2
+  displayName: 'Run CredScan'
   inputs:
     toolMajorVersion: 'V2'
+    verboseOutput: true
+    batchSize: '20'
 
+- task: SdtReport@1
+  displayName: 'Create Security Analysis Report'
+  inputs:
+    AllTools: false
+    BinSkim: false
+    CredScan: true
+    MSRD: false
+    RoslynAnalyzers: false
+    TSLint: false
+    ToolLogsNotFoundAction: 'Standard'
 
+- task: PublishSecurityAnalysisLogs@2
+  displayName: 'Publish Security Analysis Logs'
+  inputs:
+    ArtifactName: 'CodeAnalysisLogs'
+    ArtifactType: 'Container'
+    AllTools: false
+    AntiMalware: false
+    BinSkim: false
+    CredScan: true
+    MSRD: false
+    RoslynAnalyzers: false
+    TSLint: false
+    ToolLogsNotFoundAction: 'Standard'
+
+- task: PostAnalysis@1
+  displayName: 'Post Analysis'
+  inputs:
+    AllTools: false
+    BinSkim: false
+    CredScan: true
+    RoslynAnalyzers: false
+    TSLint: false
+    ToolLogsNotFoundAction: 'Standard'
