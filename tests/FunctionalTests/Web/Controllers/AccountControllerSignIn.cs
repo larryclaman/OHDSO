@@ -76,6 +76,8 @@ namespace Microsoft.eShopWeb.FunctionalTests.Web.Controllers
 
             var keyValues = new List<KeyValuePair<string, string>>();
             keyValues.Add(new KeyValuePair<string, string>("Email", "demouser@microsoft.com"));
+            
+            // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="...")]
             keyValues.Add(new KeyValuePair<string, string>("Password", "Pass@word1"));
 
             keyValues.Add(new KeyValuePair<string, string>("__RequestVerificationToken", token));
