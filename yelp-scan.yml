@@ -12,6 +12,6 @@ steps:
 - script: |
     pip install wheel
     pip install detect-secrets
-    detect-secrets scan --custom-plugins https://raw.githubusercontent.com/Yelp/detect-secrets/pre-v1-launch/detect_secrets/plugins/azure_storage_key.py > .secrets.baseline
-    detect-secrets audit .secrets.baseline
+    /usr/local/bin/detect-secrets scan --custom-plugins https://raw.githubusercontent.com/Yelp/detect-secrets/pre-v1-launch/detect_secrets/plugins/azure_storage_key.py > .secrets.baseline
+    /usr/local/bin/detect-secrets audit .secrets.baseline
   displayName: 'detect-secrets credentials scan'
