@@ -13,6 +13,8 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
 {
     public class CatalogContextSeed
     {
+        public static string StorageAccountConnStr { get; set; }
+
         public static async Task SeedAsync(CatalogContext catalogContext,
             ILoggerFactory loggerFactory, IDbSeed dbSeed ,int? retry = 0)
         {
