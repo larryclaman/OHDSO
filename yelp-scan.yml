@@ -1,0 +1,18 @@
+trigger: none
+
+pool:
+  name: 'ubuntu-latest'
+
+variables:
+  yelpimage: 'ghcr.io/larryclaman/dockerdetectsecrets:latest'
+  pluginsdir: yelp-plugins
+
+
+steps:
+- task: CmdLine@2
+  inputs:
+    script: |
+      #docker pull $(yelpimage)
+      #docker run -it --rm --name detect-secrets --volume `pwd`:/usr/src/app $(yelpimage) 
+      pip install detect-secrets
+      detect-secrets scan --custom-plugins $(pluginsdir)
