@@ -39,6 +39,7 @@ namespace Microsoft.eShopWeb.IntegrationTests.Repositories.OrderRepositoryTests
                     var signInManager = scopedServices.GetRequiredService<SignInManager<ApplicationUser>>();
 
                     var email = "demouser@microsoft.com";
+                    // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="...")]
                     var password = "Pass@word1";
 
                     var result = await signInManager.PasswordSignInAsync(email, password, false, lockoutOnFailure: false);
