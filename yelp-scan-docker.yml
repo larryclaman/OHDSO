@@ -1,0 +1,20 @@
+trigger: none
+
+jobs:
+  - job: detectionscan
+    timeoutInMinutes: 5
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    variables:
+      yelpimage: 'ghcr.io/larryclaman/dockerdetectsecrets:latest'
+      pluginsdir: yelp-plugins
+
+    steps:
+      - bash: |
+          docker pull $(yelpimage)
+          docker run --rm --name detect-secrets --volume $(Build.Repository.LocalPath):/usr/src/app $(yelpimage) > $(Build.StagingDirectory)/creds.json
+        displayName: Run detectsecrets container
+
+      - bash: cat  $(Build.StagingDirectory)/creds.json
+        displayName: Show detected creds

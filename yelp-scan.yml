@@ -11,13 +11,7 @@ jobs:
       pluginsdir: yelp-plugins
 
     steps:
-      - bash: |
-          docker pull $(yelpimage)
-          docker run --rm --name detect-secrets --volume $(Build.Repository.LocalPath):/usr/src/app $(yelpimage) > $(Build.StagingDirectory)/creds.json
-        displayName: Run detectsecrets container
-
-      - bash: cat  $(Build.StagingDirectory)/creds.json
-        displayName: Show detected creds
+   
       - task: UsePythonVersion@0
         inputs:
           versionSpec: '3.x'
@@ -33,7 +27,6 @@ jobs:
           # pipeline doesn't detect output, so have tool save output to file & cat it.
           touch $(Build.StagingDirectory)/creds.json
           echo "running scan"
-          which detect-secrets
           detect-secrets scan -n --all-files --custom-plugins $(Build.Repository.LocalPath)/$(pluginsdir)/azure_storage_key.py $(Build.Repository.LocalPath) > $(Build.StagingDirectory)/creds.json
           echo "ran scan"
           cat $(Build.StagingDirectory)/creds.json
